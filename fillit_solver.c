@@ -33,7 +33,7 @@ void	fillit_solver(char *tetlst, int board_min_len,
 		board_array = ft_bzero(board_array, curr_size);
         while ((board_pos_count % board_min_len) < baord_min_len)
         {
-		    while (tetlst->)
+		    while (tetlst(all_buff)->next)
 		    {
 			    //check whether current position is available
 			    while (board_array[board_pos] != 0 && board_array[board_pos] == '\n')
