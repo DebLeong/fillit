@@ -83,4 +83,5 @@ t_list	*tetlst(char **all_buff)
         i++;
 	}
     list->next = NULL;
+    return (list);
 }

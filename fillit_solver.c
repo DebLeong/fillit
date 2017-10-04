@@ -14,31 +14,26 @@
 
 //recursive backtracking that takes number of tetros, boardsize and each
 //tetro's array (size of 15)
-//
-//structure of char *tetro_array:
-//[0,0,0,0,\n,0,0,0,0,\n,0,0,0,0,\n,0,0,0,0]
-
 //function that checks whether current position is valid for current tetro shape
-//
 
-void	fillit_solver(char **tetro_array, int board_min_len, 
+void	fillit_solver(char *tetlst, int board_min_len, 
 	   int board_max_len)
 {
 	//This assigns a board with max size of 26 tetro * size of tetro (4x4)
 	char*	board_array[26 * 4 * 4 + 1];
-	int		curr_size = board_min_len * board_min_len;
-	int		curr_row = pos / size;
-	int		curr_col = pos % size;
+	//total board positions currently working with
+    int		curr_size = board_min_len * board_min_len;
+    //counters for iterating over arrays
 	int		row_count  = 0;
 	int		board_pos  = 0;
     int     tetro_pos  = 0;
 
-	while (row_count < board_min_len - 1)
+	while ((row_count < board_min_len - 1) && (board_min_len < board_max_len))
 	{
 		board_array = ft_bzero(board_array, curr_size);
         while ((board_pos_count % board_min_len) < baord_min_len)
         {
-		    while (*tetro_array)
+		    while (tetlst->)
 		    {
 			    //check whether current position is available
 			    while (board_array[board_pos] != 0 && board_array[board_pos] == '\n')
