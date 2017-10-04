@@ -29,23 +29,27 @@ void	fillit_solver(char **tetro_array, int board_min_len,
 	int		curr_size = board_min_len * board_min_len;
 	int		curr_row = pos / size;
 	int		curr_col = pos % size;
-	int		i = 0;
-	int		j  = 0;
+	int		row_count  = 0;
+	int		board_pos  = 0;
+    int     tetro_pos  = 0;
 
-	while (i < curr_size)
+	while (row_count < board_min_len - 1)
 	{
 		board_array = ft_bzero(board_array, curr_size);
-		while (*tetro_array)
-		{
-			//check whether current position is available starting from
-			//the beginning for each tetro
-			if (board_array[j] == 0)
-				j++;
-			while (*tetro_array[i] != '\n')
-				i++;
-				board_array[j] = *tetro_array[i];
-			i++;
-		curr_pos++;
-	}
+        while ((board_pos_count % board_min_len) < baord_min_len)
+        {
+		    while (*tetro_array)
+		    {
+			    //check whether current position is available
+			    while (board_array[board_pos] != 0 && board_array[board_pos] == '\n')
+				    board_pos++;
+			    while (*tetro_array[i] != '\n')
+				    i++;
+				    board_array[j] = *tetro_array[i];
+			    i++;
+		        curr_pos++;
+	        }
+        }
 	free(curr_pos);
+    }
 }

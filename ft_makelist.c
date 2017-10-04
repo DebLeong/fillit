@@ -66,8 +66,8 @@ int	count_width (char **all_buff)
 	return (j - i + 1);
 }
 
-//function creates list which store each tetromino string with its length
-//and width
+//function creates list which store each tetromino string
+//with its length and width
 t_list	*tetlst(char **all_buff)
 {
 	int		i;
@@ -80,5 +80,7 @@ t_list	*tetlst(char **all_buff)
 		list->length = count_len(all_buff[i]);
 		list->width = count_width(all_buff[i]);
 		list = list->next;
+        i++;
 	}
+    list->next = NULL;
 }
