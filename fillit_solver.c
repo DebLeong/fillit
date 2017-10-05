@@ -33,16 +33,19 @@ void	fillit_solver(char *tetlst, int board_min_len,
 		board_array = ft_bzero(board_array, curr_size);
         while ((board_pos_count % board_min_len) < baord_min_len)
         {
-		    while (tetlst(all_buff)->next)
+		    while (tetlst->next)
 		    {
 			    //check whether current position is available
-			    while (board_array[board_pos] != 0 && board_array[board_pos] == '\n')
+			    while (board_array[board_pos] != 0 || board_array[board_pos] == '\n')
 				    board_pos++;
-			    while (*tetro_array[i] != '\n')
-				    i++;
-				    board_array[j] = *tetro_array[i];
-			    i++;
-		        curr_pos++;
+			    while (tetlst->maketet[tetro_pos] != '\0')
+                {
+                    while (tetlst->maketet[tetro_pos] != '\n')
+				        board_array[board_pos++] = tetro_array[tetro_pos++];
+                    board_pos += 5;
+			    }
+                tetlst = tetlst->next;
+                board_pos = 0;
 	        }
         }
 	free(curr_pos);
