@@ -34,6 +34,8 @@ void				ft_putchar(char c);
 
 void				ft_putstr(char const *s);
 
+size_t              ft_strlen(char const *s);
+
 char				*ft_fillmatrix(int fd);
 
 int					ft_findbigsquare(int quan_tets);
