@@ -6,14 +6,14 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/21 10:58:25 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/21 11:13:06 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fil_libft.h"
 
 //function returns vertical coordinates of tetromino from 1D array
-int	*vertical_pos(char *tetro)
+int	*vert_pos(char *tetro)
 {
 	int i;
 	int j;
@@ -33,7 +33,7 @@ int	*vertical_pos(char *tetro)
 }
 
 //function returns horizontal coordinates of tetromino from 1D array
-int	*horizontal_pos(char *tetro)
+int	*hori_pos(char *tetro)
 {
 	int i;
 	int j;
@@ -77,8 +77,6 @@ char    *move_upperleft(char *all_buff)
 	int		j;
 	int		k;
 	int		count;
-	int		*vert;
-	int		*hori;
 	int		l;
 	int		w;
 	char	*result;
@@ -87,11 +85,9 @@ char    *move_upperleft(char *all_buff)
 	j = 0;
 	k = 0;
 	result = malloc(sizeof(char) * 21);
-	vert = vertical_pos(all_buff);
-	hori = horizontal_pos(all_buff);
-	l = (vert[1] - vert[0] + 1);
-	w = (hori[1] - hori[0] + 1);
-	count = hori[0] - 0;
+	l = (vert_pos(all_buff)[1] - vert_pos(all_buff)[0] + 1);
+	w = (hori_pos(all_buff)[1] - hori_pos(all_buff)[0] + 1);
+	count = hori_pos(all_buff)[0] - 0;
 	while (k < 20)
 	{
 		if ((k % 5) < count)
@@ -111,7 +107,7 @@ char    *move_upperleft(char *all_buff)
 	ft_putstr(result);
 	printf("\n");
 	*/
-	result = ft_strsub(result, vert[0] * (5 - count), l * w + l);
+	result = ft_strsub(result, vert_pos(all_buff)[0] * (5 - count), l * w + l);
     return (result);
 }
 
@@ -120,8 +116,6 @@ char    *move_upperleft(char *all_buff)
 t_list	*tetlst(char **all_buff)
 {
 	int		i;
-	int		*vert;
-	int		*hori;
 	int		l;
 	int		w;
 	t_list	*newlst;
@@ -131,10 +125,8 @@ t_list	*tetlst(char **all_buff)
 	while (all_buff[i])
 	{
         //assigning upperleft aligned tetromino to list
-		vert = vertical_pos(all_buff[i]);
-		hori = horizontal_pos(all_buff[i]);
-		l = (vert[1] - vert[0] + 1);
-		w = (hori[1] - hori[0] + 1);
+		l = (vert_pos(all_buff[i])[1] - vert_pos(all_buff[i])[0] + 1);
+		w = (hori_pos(all_buff[i])[1] - hori_pos(all_buff[i])[0] + 1);
 		newlst->tetro = move_upperleft(all_buff[i]);
 		newlst->length = l;
 		newlst->width = w;
@@ -151,8 +143,6 @@ int main(void)
     char	**all_buff;
 	t_list	*tetro_list;
 	/*
-	int		*vert;
-	int		*hori;
     char	*upperleft_tetro0;
 	char	*upperleft_tetro1;
 	*/
@@ -170,14 +160,10 @@ int main(void)
 	tetro_list = tetlst(all_buff);
 
 	/*
-	vert = vertical_pos(all_buff[1]);
-	printf("This is vert[0]: %i\n", vert[0]);
-	printf("This is vert[1]: %i\n", vert[1]);
-
-	hori = horizontal_pos(all_buff[1]);
-	printf("This is hori[0]: %i\n", hori[0]);
-	printf("This is hori[1]: %i\n", hori[1]);
-
+	printf("This is vert[0]: %i\n", vert_pos(all_buff[1])[0]);
+	printf("This is vert[1]: %i\n", vert_pos(all_buff[1])[1]);
+	printf("This is hori[0]: %i\n", hori_pos(all_buff[1])[0]);
+	printf("This is hori[1]: %i\n", hori_pos(all_buff[1])[1]);
 	upperleft_tetro0 = move_upperleft(all_buff[0]);
     printf("This is tetro0 after trim: \n");
     ft_putstr(upperleft_tetro0);
