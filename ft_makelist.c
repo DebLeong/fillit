@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/21 00:55:14 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/21 10:58:25 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ char    *move_upperleft(char *all_buff)
     return (result);
 }
 
-/*
 //function creates list which store each tetromino string
 //with its length and width
 t_list	*tetlst(char **all_buff)
@@ -128,7 +127,8 @@ t_list	*tetlst(char **all_buff)
 	t_list	*newlst;
 
 	i = 0;
-	while (all_buff)
+	newlst = (struct s_list *)malloc(sizeof(t_list));
+	while (all_buff[i])
 	{
         //assigning upperleft aligned tetromino to list
 		vert = vertical_pos(all_buff[i]);
@@ -139,16 +139,17 @@ t_list	*tetlst(char **all_buff)
 		newlst->length = l;
 		newlst->width = w;
 		newlst = newlst->next;
+		newlst = (struct s_list *)malloc(sizeof(t_list));
         i++;
 	}
     newlst->next = NULL;
-    return (list);
+    return (newlst);
 }
-*/
 
 int main(void)
 {
     char	**all_buff;
+	t_list	*tetro_list;
 	/*
 	int		*vert;
 	int		*hori;
@@ -166,7 +167,7 @@ int main(void)
 	all_buff[0] = ".###\n..#.\n....\n....\n\n\0";
     all_buff[1] = "....\n.###\n..#.\n....\n\n\0";
    
-	tetlst(all_buff);
+	tetro_list = tetlst(all_buff);
 
 	/*
 	vert = vertical_pos(all_buff[1]);
