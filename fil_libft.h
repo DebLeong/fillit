@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 12:57:06 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/09/28 11:52:16 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/21 00:43:06 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,25 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <string.h>
+# include <fcntl.h>
 
 typedef struct		s_list
 {
-	char			*maketet;
+	char			*tetro;
 	int				length;
 	int				width;
 	struct s_list	*next;
 }					t_list;
 
-void				ft_bzero(void *s, size_t n);
-
+void				ft_bzero(char *s, size_t n);
 void				*ft_memalloc(size_t size);
-
 char				*ft_strnew(size_t size);
-
 void				ft_putchar(char c);
-
 void				ft_putstr(char const *s);
-
 size_t              ft_strlen(char const *s);
-
+char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_fillmatrix(int fd);
-
 int					ft_findbigsquare(int quan_tets);
 
 #endif
