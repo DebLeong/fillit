@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/21 11:13:06 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/23 16:28:31 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	*vert_pos(char *tetro)
 	result[0] = i / 5;
 	result[1] = j / 5;
 	return (result);
-	free (result);
 }
 
 //function returns horizontal coordinates of tetromino from 1D array
@@ -66,7 +65,6 @@ int	*hori_pos(char *tetro)
 	result[0] = leftmost;
 	result[1] = rightmost;
 	return (result);
-	free (result);
 }
 
 //function moves tetro to upperleftmost corner and return
@@ -115,13 +113,16 @@ char    *move_upperleft(char *all_buff)
 //with its length and width
 t_list	*tetlst(char **all_buff)
 {
-	int		i;
-	int		l;
-	int		w;
-	t_list	*newlst;
+	int			i;
+	int			l;
+	int			w;
+	t_list		*newlst;
+	t_list		*root;
+	t_list		*tmp;
 
 	i = 0;
-	newlst = (struct s_list *)malloc(sizeof(t_list));
+	root = (struct s_list *)malloc(sizeof(t_list));
+	newlst = root;
 	while (all_buff[i])
 	{
         //assigning upperleft aligned tetromino to list
@@ -130,18 +131,24 @@ t_list	*tetlst(char **all_buff)
 		newlst->tetro = move_upperleft(all_buff[i]);
 		newlst->length = l;
 		newlst->width = w;
-		newlst = newlst->next;
-		newlst = (struct s_list *)malloc(sizeof(t_list));
+		if (all_buff[i + 1])
+		{
+			tmp = (struct s_list *)malloc(sizeof(t_list));
+			newlst->next = tmp;
+			newlst = newlst->next;
+		}
+		else
+			newlst->next = NULL;
         i++;
 	}
-    newlst->next = NULL;
-    return (newlst);
+    return (root);
 }
 
 int main(void)
 {
     char	**all_buff;
-	t_list	*tetro_list;
+	int		tetronum;
+	t_list	*current;;
 	/*
     char	*upperleft_tetro0;
 	char	*upperleft_tetro1;
@@ -156,9 +163,19 @@ int main(void)
 
 	all_buff[0] = ".###\n..#.\n....\n....\n\n\0";
     all_buff[1] = "....\n.###\n..#.\n....\n\n\0";
+	all_buff[2] = NULL;
    
-	tetro_list = tetlst(all_buff);
-
+	current = tetlst(all_buff);
+	tetronum = 0;
+	while (current != NULL)
+	{
+		printf("This is tetro %i: \n", tetronum);
+		ft_putstr(current->tetro);
+		printf("Length is: %i\n", current->length);
+		printf("Width is: %i\n", current->width);
+		current = current->next;
+		tetronum++;
+	}
 	/*
 	printf("This is vert[0]: %i\n", vert_pos(all_buff[1])[0]);
 	printf("This is vert[1]: %i\n", vert_pos(all_buff[1])[1]);

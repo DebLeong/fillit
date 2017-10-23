@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/18 13:00:57 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/23 16:06:05 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ char **ft_maketet(int fd)
 	while (read(fd, buf, 21) && i < 4)
 	{
 		buf[21] = '\0';
-		all_buf[i] = strdup(buf);
+		all_buf[i] = ft_strdup(buf);
 		buf = ft_strnew(20);
 		i++;
 	}
-	all_buf[i] = "\0";
+	all_buf[i] = NULL;
 	return (all_buf);
 }
 

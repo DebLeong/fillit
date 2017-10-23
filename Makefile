@@ -13,7 +13,7 @@
 NAME = fillit.a
 
 FILES = ft_maketet.c ft_putstr.c ft_strlen.c ft_memalloc.c ft_strnew.c \
-		ft_bzero.c ft_strsub.c
+		ft_bzero.c ft_strsub.c ft_strdup.c ft_strcmp.c
 
 OBJ = *.o
 
