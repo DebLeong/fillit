@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/23 22:03:02 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/23 23:42:52 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,13 @@ t_list	*tetlst(char **all_buff)
 	int			i;
 	int			l;
 	int			w;
+	int			alphabet;
 	t_list		*newlst;
 	t_list		*root;
 	t_list		*tmp;
 
 	i = 0;
+	alphabet = 65;
 	root = (struct s_list *)malloc(sizeof(t_list));
 	newlst = root;
 	while (all_buff[i])
@@ -133,6 +135,7 @@ t_list	*tetlst(char **all_buff)
 		l = (vert_pos(all_buff[i])[1] - vert_pos(all_buff[i])[0] + 1);
 		w = (hori_pos(all_buff[i])[1] - hori_pos(all_buff[i])[0] + 1);
 		newlst->tetro = move_upperleft(all_buff[i]);
+		newlst->letter = alphabet;
 		newlst->length = l;
 		newlst->width = w;
 		if (all_buff[i + 1])
@@ -144,11 +147,13 @@ t_list	*tetlst(char **all_buff)
 		else
 			newlst->next = NULL;
         i++;
+		alphabet++;
 	}
     return (root);
 	free (root);
 }
 
+/*
 int main(void)
 {
 	int		fd;
@@ -156,26 +161,20 @@ int main(void)
 	int		tetronum;
 	t_list	*current;;
 
-	/*
     char	*upperleft_tetro0;
 	char	*upperleft_tetro1;
-	*/
 
     all_buff = malloc(sizeof(char) * 52);
 	fd = open("valid", O_RDONLY);
 	all_buff = ft_maketet(fd);
     
-	/*
 	upperleft_tetro0 = malloc(sizeof(char) * 52);
 	upperleft_tetro1 = malloc(sizeof(char) * 52);
-	*/
 
-	/*
 	all_buff[0] = ".###\n..#.\n....\n....\n\n\0";
     all_buff[1] = "....\n..##\n.##.\n....\n\n\0";
     all_buff[2] = "...#\n...#\n...#\n...#\n\n\0";
 	all_buff[3] = NULL;
-	*/
 
 	current = tetlst(all_buff);
 	tetronum = 0;
@@ -183,20 +182,18 @@ int main(void)
 	{
 		printf("This is tetro %i: \n", tetronum);
 		ft_putstr(current->tetro);
+		printf("Letter is: %c\n", current->letter);
 		printf("Length is: %i\n", current->length);
 		printf("Width is: %i\n\n", current->width);
 		current = current->next;
 		tetronum++;
 	}
 
-	/*
 	printf("This is vert[0]: %i\n", vert_pos(all_buff[0])[0]);
 	printf("This is vert[1]: %i\n", vert_pos(all_buff[0])[1]);
 	printf("This is hori[0]: %i\n", hori_pos(all_buff[0])[0]);
 	printf("This is hori[1]: %i\n", hori_pos(all_buff[0])[1]);
-	*/
 
-	/*
 	upperleft_tetro0 = move_upperleft(all_buff[3]);
     printf("This is tetro0 after trim: \n");
     ft_putstr(upperleft_tetro0);
@@ -209,7 +206,7 @@ int main(void)
 	
 	free(upperleft_tetro0);
 	free(upperleft_tetro1);
-	*/
 
     free(all_buff);
 }
+*/
