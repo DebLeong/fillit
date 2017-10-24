@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/23 16:28:31 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/23 22:03:02 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	*vert_pos(char *tetro)
 	int	*result = NULL;
 
 	i = 0;
-	j = 20;
+	j = 19;
 	result = malloc(sizeof(int) * 2);
 	while (tetro[i] == '.' || tetro[i] == '\n')
 		i++;
@@ -29,6 +29,7 @@ int	*vert_pos(char *tetro)
 	result[0] = i / 5;
 	result[1] = j / 5;
 	return (result);
+	free (result);
 }
 
 //function returns horizontal coordinates of tetromino from 1D array
@@ -46,8 +47,8 @@ int	*hori_pos(char *tetro)
 	result = malloc(sizeof(int) * 2);
 	while (j < 4)
 	{
-		i = 4 * j;
-		while (tetro[i] == '.' || tetro[i] == '\n')
+		i = 5 * j;
+		while ((tetro[i] == '.' || tetro[i] == '\n') && (i < ((j + 1) * 5 - 1)))
 			i++;
 		if ((i % 5) < leftmost)
 			leftmost = i % 5;
@@ -55,8 +56,8 @@ int	*hori_pos(char *tetro)
 	}
 	while (j > 0)
 	{
-		i = 4 * j;
-		while (tetro[i] == '.' || tetro[i] == '\n')
+		i = 5 * j;
+		while ((tetro[i] == '.' || tetro[i] == '\n') && (i > (j - 1) * 5))
 			i--;
 		if ((i % 5) > rightmost)
 			rightmost = i % 5;
@@ -65,6 +66,7 @@ int	*hori_pos(char *tetro)
 	result[0] = leftmost;
 	result[1] = rightmost;
 	return (result);
+	free (result);
 }
 
 //function moves tetro to upperleftmost corner and return
@@ -74,6 +76,7 @@ char    *move_upperleft(char *all_buff)
 	int		i;
 	int		j;
 	int		k;
+	//count is the offset of tetromino by column
 	int		count;
 	int		l;
 	int		w;
@@ -105,8 +108,9 @@ char    *move_upperleft(char *all_buff)
 	ft_putstr(result);
 	printf("\n");
 	*/
-	result = ft_strsub(result, vert_pos(all_buff)[0] * (5 - count), l * w + l);
+	result = ft_strsub(result, vert_pos(all_buff)[0] * (5 - count), ((l * w) + l));
     return (result);
+	free (result);
 }
 
 //function creates list which store each tetromino string
@@ -142,29 +146,37 @@ t_list	*tetlst(char **all_buff)
         i++;
 	}
     return (root);
+	free (root);
 }
 
 int main(void)
 {
+	int		fd;
     char	**all_buff;
 	int		tetronum;
 	t_list	*current;;
+
 	/*
     char	*upperleft_tetro0;
 	char	*upperleft_tetro1;
 	*/
 
     all_buff = malloc(sizeof(char) * 52);
+	fd = open("valid", O_RDONLY);
+	all_buff = ft_maketet(fd);
     
 	/*
 	upperleft_tetro0 = malloc(sizeof(char) * 52);
 	upperleft_tetro1 = malloc(sizeof(char) * 52);
-    */
+	*/
 
+	/*
 	all_buff[0] = ".###\n..#.\n....\n....\n\n\0";
-    all_buff[1] = "....\n.###\n..#.\n....\n\n\0";
-	all_buff[2] = NULL;
-   
+    all_buff[1] = "....\n..##\n.##.\n....\n\n\0";
+    all_buff[2] = "...#\n...#\n...#\n...#\n\n\0";
+	all_buff[3] = NULL;
+	*/
+
 	current = tetlst(all_buff);
 	tetronum = 0;
 	while (current != NULL)
@@ -172,16 +184,20 @@ int main(void)
 		printf("This is tetro %i: \n", tetronum);
 		ft_putstr(current->tetro);
 		printf("Length is: %i\n", current->length);
-		printf("Width is: %i\n", current->width);
+		printf("Width is: %i\n\n", current->width);
 		current = current->next;
 		tetronum++;
 	}
+
 	/*
-	printf("This is vert[0]: %i\n", vert_pos(all_buff[1])[0]);
-	printf("This is vert[1]: %i\n", vert_pos(all_buff[1])[1]);
-	printf("This is hori[0]: %i\n", hori_pos(all_buff[1])[0]);
-	printf("This is hori[1]: %i\n", hori_pos(all_buff[1])[1]);
-	upperleft_tetro0 = move_upperleft(all_buff[0]);
+	printf("This is vert[0]: %i\n", vert_pos(all_buff[0])[0]);
+	printf("This is vert[1]: %i\n", vert_pos(all_buff[0])[1]);
+	printf("This is hori[0]: %i\n", hori_pos(all_buff[0])[0]);
+	printf("This is hori[1]: %i\n", hori_pos(all_buff[0])[1]);
+	*/
+
+	/*
+	upperleft_tetro0 = move_upperleft(all_buff[3]);
     printf("This is tetro0 after trim: \n");
     ft_putstr(upperleft_tetro0);
 	printf("\n");

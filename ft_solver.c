@@ -6,7 +6,7 @@
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 15:39:59 by dleong            #+#    #+#             */
-/*   Updated: 2017/09/28 13:07:03 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/23 16:41:51 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	fillit_solver(char *tetlst, int board_min_len,
 	while ((row_count < board_min_len - 1) && (board_min_len < board_max_len))
 	{
 		board_array = ft_bzero(board_array, curr_size);
-        while ((board_pos_count % board_min_len) < baord_min_len)
+        while ((board_pos % board_min_len) < baord_min_len)
         {
 		    while (tetlst->next)
 		    {
 			    //check whether current position is available
-			    while (board_array[board_pos] != 0 || board_array[board_pos] == '\n')
+			    while (board_array[board_pos] != "." || board_array[board_pos] == '\n')
 				    board_pos++;
 			    while (tetlst->maketet[tetro_pos] != '\0')
                 {
@@ -50,4 +50,9 @@ void	fillit_solver(char *tetlst, int board_min_len,
         }
 	free(curr_pos);
     }
+}
+
+int		main(void)
+{
+	ft_findbigsquare
 }

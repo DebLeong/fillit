@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/23 16:06:05 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/23 22:03:50 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char **ft_maketet(int fd)
 	return (all_buf);
 }
 
+/*
 int main(void)
 {
 	int		fd;
@@ -49,3 +50,4 @@ int main(void)
 
 	return (0);
 }
+*/
