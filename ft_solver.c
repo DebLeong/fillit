@@ -6,107 +6,138 @@
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 15:39:59 by dleong            #+#    #+#             */
-/*   Updated: 2017/10/23 23:44:50 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/29 18:14:08 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fil_libft.h"
 
-//recursive backtracking that takes number of tetros, boardsize and each
-//tetro's array (size of 15)
-//function that checks whether current position is valid for current tetro shape
-
-int		test_pos(t_list	*tetlst, int board_len)
+int		test_pos(t_list *tetlst, char *board, int b_len, int b_pos)
 {
-	//char	*board_array[26 * 4 * 4 + 1];
-	int		curr_size = board_len * board_len;
-	int		curr_pos;
-	t_list	*curr_lst;
-	int		i;
+	int		t_pos;
+	int		count[2];
+	char	*tetro;
 
-	i = 0;
-	curr_pos = 0;
-	curr_lst = tetlst;
-	while (curr_lst != NULL && curr_pos < curr_size)
+	t_pos = 0;
+	count[0] = -1;
+	count[1] = -1;
+	tetro = &tetlst->tetro[t_pos];
+	while (++count[1] < tetlst->length)
 	{
-		if (ft_isalpha(curr_pos))
-			return (0);
-		while (curr_lst->length && i < (curr_lst->width  * curr_lst->length))
+		count[0] = -1;
+		t_pos = 0 + (count[1] * tetlst->width);
+		while ((++count[0] < tetlst->width) && ((b_pos % (b_len + 1)) < b_len))
 		{
-			while (curr_lst->width && i < (curr_lst->width * curr_lst->length))
-			{
-				if (curr_lst->tetro[i] == '#')
-					curr_pos++;
-				if (ft_isalpha(curr_pos))
-					return (0);
-				i++;
-			}
-			curr_pos += 4;
-			curr_lst = curr_lst->next;
+			if ((tetro[t_pos] == '#') && (board[b_pos] != '.'))
+				return (0);
+			b_pos++;
+			t_pos++;
 		}
+		if (t_pos < (tetlst->width - 1))
+			return (0);
+		b_pos = b_pos + (b_len - tetlst->width + 1);
 	}
 	return (1);
 }
 
-/*
-void	fillit_solver(char *tetlst, int board_min_len, 
-		int board_max_len)
+int		place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 {
-	//This assigns a board with max size of 26 tetro * size of tetro (4x4)
-	char*	board_array[26 * 4 * 4 + 1];
-	//total board positions currently working with
-	int		curr_size = board_min_len * board_min_len;
-	//counters for iterating over arrays
-	int		row_count  = 0;
-	int		board_pos  = 0;
-	int     tetro_pos  = 0;
-	
-	int		fd;
-	char	**all_buff;
-	t_list	*current;
+	int		t_pos;
+	int		x;
+	int		y;
+	char	*tetro;
 
-	all_buff = malloc(sizeof(char) * 52);
-	fd = open("valid", O_RDONLY);
-	all_buff = ft_maketet(fd);
-	current = tetlst(all_buff);
-
-	testwhile ((row_count < board_min_len - 1) && (board_min_len < board_max_len))
+	t_pos = 0;
+	x = 0;
+	y = 0;
+	tetro = &tetlst->tetro[t_pos];
+	while (y < tetlst->length)
 	{
-		board_array = ft_bzero(board_array, curr_size);
-		while ((board_pos % board_min_len) < baord_min_len)
+		x = 0;
+		t_pos = 0 + (y * tetlst->width);
+		while ((x < tetlst->width) && ((b_pos % (b_len + 1)) < b_len))
 		{
-			while (tetlst->next)
-			{
-				//check whether current position is available
-				while (board_array[board_pos] != "." || board_array[board_pos] == '\n')
-					board_pos++;
-				while (tetlst->maketet[tetro_pos] != '\0')
-				{
-					while (tetlst->maketet[tetro_pos] != '\n')
-						board_array[board_pos++] = tetro_array[tetro_pos++];
-					board_pos += 5;
-				}
-				tetlst = tetlst->next;
-				board_pos = 0;
-			}
+			if (tetro[t_pos] == '#')
+				board[b_pos] = tetlst->letter;
+			b_pos++;
+			t_pos++;
+			x++;
 		}
-		free(curr_pos);
+		y++;
+		b_pos = b_pos + (b_len - tetlst->width + 1);
+	}
+	return (1);
+}
+
+void	del_tet(t_list *tetlst, char *board, int b_len, int b_pos)
+{
+	int		t_pos;
+	int		count[2];
+	char	*tetro;
+
+	count[1] = 0;
+	t_pos = 0;
+	tetro = &tetlst->tetro[t_pos];
+	while (count[1] < tetlst->length)
+	{
+		count[0] = 0;
+		t_pos = count[1] * tetlst->width;
+		while (count[0] < tetlst->width)
+		{
+			if (board[b_pos] == tetlst->letter)
+				board[b_pos] = '.';
+			b_pos++;
+			t_pos++;
+			count[0] += 1;
+		}
+		count[1] += 1;
+		b_pos = b_pos + (b_len - tetlst->width + 1);
 	}
 }
-*/
 
-int main(void)
+int		recursive_solver(t_list *tetlst, char *board, int b_len, int b_pos)
+{
+	t_list	*root;
+
+	root = tetlst;
+	if (root == NULL)
+		return (1);
+	while (b_pos < (int)ft_strlen(board))
+	{
+		if (test_pos(root, board, b_len, b_pos))
+		{
+			place_tet(root, board, b_len, b_pos);
+			if (recursive_solver(root->next, board, b_len, b_pos + 1))
+				return (1);
+			del_tet(root, board, b_len, b_pos);
+		}
+		b_pos++;
+	}
+	if (b_pos == ((int)ft_strlen(board) - 1))
+		return (1);
+	return (0);
+}
+
+int		main(void)
 {
 	int		fd;
 	char	**all_buff;
-	int		result;
-	t_list	*current;
+	char	*board;
+	int		b_len;
+	t_list	*curr_lst;
 
-	result = 0;
-	all_buff = malloc(sizeof(char) * 52);
-	fd = open("valid", O_RDONLY);
+	all_buff = ft_memalloc(sizeof(char) * 22 * (26 + 1));
+	fd = open("valid1", O_RDONLY);
 	all_buff = ft_maketet(fd);
-	current = tetlst(all_buff);
-	result = test_pos((t_list *)tetlst, 4);
-	printf("%i\n", result);
+	b_len = ft_findbigsquare(ft_count_tetro(all_buff));
+	board = ft_strnew(sizeof(char) * 121);
+	ft_bzboard(board, (size_t)b_len);
+	curr_lst = tetlst(all_buff);
+	while (!(recursive_solver(curr_lst, board, b_len, 0)))
+	{
+		b_len++;
+		ft_bzboard((char *)board, (size_t)b_len);
+	}
+	ft_putstr(board);
+	return (0);
 }

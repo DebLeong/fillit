@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/29 18:05:11 by dleong            #+#    #+#             */
+/*   Updated: 2017/10/29 18:05:36 by dleong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fil_libft.h"
 
-size_t  ft_strlen(char const *s)
+size_t	ft_strlen(char const *s)
 {
-    size_t count;
+	size_t count;
 
-    count = 0;
-    while (s[count] != '\0')
-    {
-        count += 1;
-    }
-    return (count);
+	count = 0;
+	while (s[count] != '\0')
+	{
+		count += 1;
+	}
+	return (count);
 }

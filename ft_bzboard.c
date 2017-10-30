@@ -1,22 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_bzboard.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/22 16:46:36 by dleong            #+#    #+#             */
-/*   Updated: 2017/10/25 11:44:47 by dleong           ###   ########.fr       */
+/*   Created: 2017/10/26 22:54:44 by dleong            #+#    #+#             */
+/*   Updated: 2017/10/29 18:03:14 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fil_libft.h"
 
-void	*ft_memalloc(size_t size)
+char	*ft_bzboard(char *s, size_t n)
 {
-	void	*s;
+	size_t	i;
+	size_t	j;
 
-	if ((s = (void *)malloc(size)))
-		ft_bzero(s, size);
+	i = 0;
+	j = 0;
+	while (i < n)
+	{
+		j = 0;
+		while (j < n)
+		{
+			s[j + (i * (n + 1))] = '.';
+			j++;
+		}
+		if ((j % n) == 0)
+		{
+			s[j + (i * (n + 1))] = '\n';
+			j++;
+		}
+		i++;
+	}
+	s[i * (n + 1)] = '\0';
 	return (s);
 }

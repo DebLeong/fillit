@@ -6,17 +6,17 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/23 22:03:50 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/29 18:06:22 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fil_libft.h"
 
-char **ft_maketet(int fd)
+char	**ft_maketet(int fd)
 {
-	char *buf;
-	char **all_buf;
-	int i;
+	char	*buf;
+	char	**all_buf;
+	int		i;
 
 	i = 0;
 	all_buf = (char**)ft_memalloc(sizeof(char*) * 26);
@@ -32,22 +32,22 @@ char **ft_maketet(int fd)
 	return (all_buf);
 }
 
-/*
-int main(void)
+int		ft_count_tetro(char **all_buff)
 {
-	int		fd;
-	int		i;
-	char	**all_buff;
+	int	count;
 
-	i = 0;
-	fd = open("valid", O_RDONLY);
-	all_buff = ft_maketet(fd);
-	while (all_buff[0][i] != '\0')
-	{
-		ft_putstr(all_buff[i]);
-		i++;
-	}
-
-	return (0);
+	count = 0;
+	while (all_buff[count])
+		count++;
+	return (count);
 }
-*/
+
+int		ft_findbigsquare(int tet_quan)
+{
+	int	b_len;
+
+	b_len = 4;
+	while ((b_len << 2) < (tet_quan * 4))
+		b_len++;
+	return (b_len);
+}

@@ -6,22 +6,26 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/23 23:42:52 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/29 18:37:23 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fil_libft.h"
 
-//function returns vertical coordinates of tetromino from 1D array
-int	*vert_pos(char *tetro)
+/*
+** function returns vertical coordinates of tetromino from 1D array
+*/
+
+int		*v_pos(char *tetro)
 {
 	int i;
 	int j;
-	int	*result = NULL;
+	int	*result;
 
 	i = 0;
 	j = 19;
-	result = malloc(sizeof(int) * 2);
+	result = NULL;
+	result = ft_memalloc(sizeof(int) * 2);
 	while (tetro[i] == '.' || tetro[i] == '\n')
 		i++;
 	while (tetro[j] == '.' || tetro[j] == '\n')
@@ -29,184 +33,104 @@ int	*vert_pos(char *tetro)
 	result[0] = i / 5;
 	result[1] = j / 5;
 	return (result);
-	free (result);
 }
 
-//function returns horizontal coordinates of tetromino from 1D array
-int	*hori_pos(char *tetro)
+/*
+** function returns horizontal coordinates of tetromino from 1D array
+*/
+
+int		*h_pos(char *tetro)
 {
 	int i;
 	int j;
 	int leftmost;
-	int	rightmost;
-	int	*result = NULL;
+	int	*result;
 
 	j = 0;
 	leftmost = 3;
-	rightmost = 0;
-	result = malloc(sizeof(int) * 2);
+	result = NULL;
+	result = ft_memalloc(sizeof(int) * 2);
 	while (j < 4)
 	{
 		i = 5 * j;
-		while ((tetro[i] == '.' || tetro[i] == '\n') && (i < ((j + 1) * 5 - 1)))
+		while ((tetro[i] == '.' || tetro[i] == '\n') &&
+				(i < ((j + 1) * 5 - 1)))
 			i++;
 		if ((i % 5) < leftmost)
 			leftmost = i % 5;
 		j++;
 	}
-	while (j > 0)
-	{
-		i = 5 * j;
-		while ((tetro[i] == '.' || tetro[i] == '\n') && (i > (j - 1) * 5))
-			i--;
-		if ((i % 5) > rightmost)
-			rightmost = i % 5;
-		j--;
-	}
 	result[0] = leftmost;
-	result[1] = rightmost;
+	result[1] = 4;
 	return (result);
-	free (result);
 }
 
-//function moves tetro to upperleftmost corner and return
-//array of 2D array of tetros of 4 * 5 
-char    *move_upperleft(char *all_buff)
+/*
+** function moves tetro to upperleftmost corner and return
+** array of 2D array of tetros of 4 * 5
+*/
+
+char	*move_upperleft(char *all_buff)
 {
-	int		i;
-	int		j;
-	int		k;
-	//count is the offset of tetromino by column
-	int		count;
+	int		count[3];
+	int		offset;
 	int		l;
 	int		w;
 	char	*result;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	result = malloc(sizeof(char) * 21);
-	l = (vert_pos(all_buff)[1] - vert_pos(all_buff)[0] + 1);
-	w = (hori_pos(all_buff)[1] - hori_pos(all_buff)[0] + 1);
-	count = hori_pos(all_buff)[0] - 0;
-	while (k < 20)
+	count[0] = 0;
+	count[1] = 0;
+	count[2] = 0;
+	result = ft_memalloc(sizeof(char) * 21);
+	l = (v_pos(all_buff)[1] - v_pos(all_buff)[0] + 1);
+	w = (h_pos(all_buff)[1] - h_pos(all_buff)[0] + 1);
+	offset = h_pos(all_buff)[0];
+	while (count[2] < 20)
 	{
-		if ((k % 5) < count)
-		{
-			result[j] = all_buff[k + count];
-			k = k + count + 1;
-		}
-		else
-		{
-			result[j] = all_buff[k];
-			k = k + 1;
-		}
-		j++;
+		while ((count[2] % 5) < offset)
+			count[2]++;
+		result[count[1]] = all_buff[count[2]];
+		count[2]++;
+		count[1]++;
 	}
-	/*
-	printf("This is before trim:\n");
-	ft_putstr(result);
-	printf("\n");
-	*/
-	result = ft_strsub(result, vert_pos(all_buff)[0] * (5 - count), ((l * w) + l));
-    return (result);
-	free (result);
+	w = 5 - offset;
+	result = ft_strsub(result, v_pos(all_buff)[0] * w, l * w);
+	return (result);
 }
 
-//function creates list which store each tetromino string
-//with its length and width
+/*
+** function creates list which store each tetromino string
+** with its length and width
+*/
+
 t_list	*tetlst(char **all_buff)
 {
 	int			i;
-	int			l;
-	int			w;
 	int			alphabet;
 	t_list		*newlst;
 	t_list		*root;
 	t_list		*tmp;
 
-	i = 0;
+	i = -1;
 	alphabet = 65;
-	root = (struct s_list *)malloc(sizeof(t_list));
+	root = (struct s_list *)ft_memalloc(sizeof(t_list));
 	newlst = root;
-	while (all_buff[i])
+	while (all_buff[++i])
 	{
-        //assigning upperleft aligned tetromino to list
-		l = (vert_pos(all_buff[i])[1] - vert_pos(all_buff[i])[0] + 1);
-		w = (hori_pos(all_buff[i])[1] - hori_pos(all_buff[i])[0] + 1);
+		newlst->length = (v_pos(all_buff[i])[1] - v_pos(all_buff[i])[0] + 1);
+		newlst->width = (h_pos(all_buff[i])[1] - h_pos(all_buff[i])[0] + 1);
 		newlst->tetro = move_upperleft(all_buff[i]);
 		newlst->letter = alphabet;
-		newlst->length = l;
-		newlst->width = w;
+		newlst->tetro_len = ft_strlen(newlst->tetro);
 		if (all_buff[i + 1])
 		{
-			tmp = (struct s_list *)malloc(sizeof(t_list));
+			tmp = (struct s_list *)ft_memalloc(sizeof(t_list));
 			newlst->next = tmp;
 			newlst = newlst->next;
 		}
 		else
 			newlst->next = NULL;
-        i++;
 		alphabet++;
 	}
-    return (root);
-	free (root);
+	return (root);
 }
-
-/*
-int main(void)
-{
-	int		fd;
-    char	**all_buff;
-	int		tetronum;
-	t_list	*current;;
-
-    char	*upperleft_tetro0;
-	char	*upperleft_tetro1;
-
-    all_buff = malloc(sizeof(char) * 52);
-	fd = open("valid", O_RDONLY);
-	all_buff = ft_maketet(fd);
-    
-	upperleft_tetro0 = malloc(sizeof(char) * 52);
-	upperleft_tetro1 = malloc(sizeof(char) * 52);
-
-	all_buff[0] = ".###\n..#.\n....\n....\n\n\0";
-    all_buff[1] = "....\n..##\n.##.\n....\n\n\0";
-    all_buff[2] = "...#\n...#\n...#\n...#\n\n\0";
-	all_buff[3] = NULL;
-
-	current = tetlst(all_buff);
-	tetronum = 0;
-	while (current != NULL)
-	{
-		printf("This is tetro %i: \n", tetronum);
-		ft_putstr(current->tetro);
-		printf("Letter is: %c\n", current->letter);
-		printf("Length is: %i\n", current->length);
-		printf("Width is: %i\n\n", current->width);
-		current = current->next;
-		tetronum++;
-	}
-
-	printf("This is vert[0]: %i\n", vert_pos(all_buff[0])[0]);
-	printf("This is vert[1]: %i\n", vert_pos(all_buff[0])[1]);
-	printf("This is hori[0]: %i\n", hori_pos(all_buff[0])[0]);
-	printf("This is hori[1]: %i\n", hori_pos(all_buff[0])[1]);
-
-	upperleft_tetro0 = move_upperleft(all_buff[3]);
-    printf("This is tetro0 after trim: \n");
-    ft_putstr(upperleft_tetro0);
-	printf("\n");
-	
-	upperleft_tetro1 = move_upperleft(all_buff[1]);
-    printf("This is tetro1 after trim: \n");
-    ft_putstr(upperleft_tetro1);
-	printf("\n");
-	
-	free(upperleft_tetro0);
-	free(upperleft_tetro1);
-
-    free(all_buff);
-}
-*/

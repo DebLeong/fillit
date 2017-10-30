@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/29 18:01:39 by dleong            #+#    #+#             */
+/*   Updated: 2017/10/29 18:02:49 by dleong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fil_libft.h"
 
-void    ft_putstr(char const *s)
+void	ft_putstr(char const *s)
 {
-    if (s != NULL)
-        write(1, s, (int)ft_strlen(s));
+	if (s != NULL)
+		write(1, s, (int)ft_strlen(s));
 }
