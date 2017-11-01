@@ -6,36 +6,39 @@
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 15:39:59 by dleong            #+#    #+#             */
-/*   Updated: 2017/10/29 18:14:08 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/30 14:50:09 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fil_libft.h"
+#include "fillit.h"
 
 int		test_pos(t_list *tetlst, char *board, int b_len, int b_pos)
 {
 	int		t_pos;
-	int		count[2];
+	int		x;
+	int		y;
 	char	*tetro;
+	int		offset_w = b_pos % (b_len + 1);
+	int		offset_l = b_pos / b_len;
 
 	t_pos = 0;
-	count[0] = -1;
-	count[1] = -1;
+	x = 0;
+	y = 0;
 	tetro = &tetlst->tetro[t_pos];
-	while (++count[1] < tetlst->length)
+	while ((y < tetlst->length) && ((offset_l + y) < b_len))
 	{
-		count[0] = -1;
-		t_pos = 0 + (count[1] * tetlst->width);
-		while ((++count[0] < tetlst->width) && ((b_pos % (b_len + 1)) < b_len))
+		x = 0;
+		t_pos = 0 + (y * tetlst->width);
+		b_pos = offset_w + (y * (b_len + 1));
+		while ((x < tetlst->width) && ((offset_w + x) < b_len))
 		{
 			if ((tetro[t_pos] == '#') && (board[b_pos] != '.'))
 				return (0);
 			b_pos++;
 			t_pos++;
+			x++;
 		}
-		if (t_pos < (tetlst->width - 1))
-			return (0);
-		b_pos = b_pos + (b_len - tetlst->width + 1);
+		y++;
 	}
 	return (1);
 }
@@ -46,16 +49,19 @@ int		place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 	int		x;
 	int		y;
 	char	*tetro;
+	int		offset_w = b_pos % (b_len + 1);
+	int		offset_l = b_pos / b_len;
 
 	t_pos = 0;
 	x = 0;
 	y = 0;
 	tetro = &tetlst->tetro[t_pos];
-	while (y < tetlst->length)
+	while ((y < tetlst->length) && ((offset_l + y) < b_len))
 	{
 		x = 0;
 		t_pos = 0 + (y * tetlst->width);
-		while ((x < tetlst->width) && ((b_pos % (b_len + 1)) < b_len))
+		b_pos = offset_w + (y * (b_len + 1));
+		while ((x < tetlst->width) && ((offset_w + x) < b_len))
 		{
 			if (tetro[t_pos] == '#')
 				board[b_pos] = tetlst->letter;
@@ -64,7 +70,6 @@ int		place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 			x++;
 		}
 		y++;
-		b_pos = b_pos + (b_len - tetlst->width + 1);
 	}
 	return (1);
 }
@@ -72,26 +77,30 @@ int		place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 void	del_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 {
 	int		t_pos;
-	int		count[2];
+	int		x;
+	int		y;
 	char	*tetro;
+	int		offset_w = b_pos % (b_len + 1);
+	int		offset_l = b_pos / b_len;
 
-	count[1] = 0;
 	t_pos = 0;
+	x = 0;
+	y = 0;
 	tetro = &tetlst->tetro[t_pos];
-	while (count[1] < tetlst->length)
+	while ((y < tetlst->length) && ((offset_l + y) < b_len))
 	{
-		count[0] = 0;
-		t_pos = count[1] * tetlst->width;
-		while (count[0] < tetlst->width)
+		x = 0;
+		t_pos = 0 + (y * tetlst->width);
+		b_pos = offset_w + (y * (b_len + 1));
+		while ((x < tetlst->width) && ((offset_w + x) < b_len))
 		{
 			if (board[b_pos] == tetlst->letter)
 				board[b_pos] = '.';
 			b_pos++;
 			t_pos++;
-			count[0] += 1;
+			x++;
 		}
-		count[1] += 1;
-		b_pos = b_pos + (b_len - tetlst->width + 1);
+		y++;
 	}
 }
 
@@ -106,38 +115,15 @@ int		recursive_solver(t_list *tetlst, char *board, int b_len, int b_pos)
 	{
 		if (test_pos(root, board, b_len, b_pos))
 		{
+			//ft_putstr("placed\n");
+			//printf("b_pos is %i\n", b_pos);
 			place_tet(root, board, b_len, b_pos);
-			if (recursive_solver(root->next, board, b_len, b_pos + 1))
+			//tt_putstr(board);
+			if (recursive_solver(root->next, board, b_len, b_pos))
 				return (1);
 			del_tet(root, board, b_len, b_pos);
 		}
 		b_pos++;
 	}
-	if (b_pos == ((int)ft_strlen(board) - 1))
-		return (1);
-	return (0);
-}
-
-int		main(void)
-{
-	int		fd;
-	char	**all_buff;
-	char	*board;
-	int		b_len;
-	t_list	*curr_lst;
-
-	all_buff = ft_memalloc(sizeof(char) * 22 * (26 + 1));
-	fd = open("valid1", O_RDONLY);
-	all_buff = ft_maketet(fd);
-	b_len = ft_findbigsquare(ft_count_tetro(all_buff));
-	board = ft_strnew(sizeof(char) * 121);
-	ft_bzboard(board, (size_t)b_len);
-	curr_lst = tetlst(all_buff);
-	while (!(recursive_solver(curr_lst, board, b_len, 0)))
-	{
-		b_len++;
-		ft_bzboard((char *)board, (size_t)b_len);
-	}
-	ft_putstr(board);
 	return (0);
 }

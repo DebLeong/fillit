@@ -6,11 +6,11 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/29 18:37:23 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/29 19:08:25 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fil_libft.h"
+#include "fillit.h"
 
 /*
 ** function returns vertical coordinates of tetromino from 1D array
@@ -112,7 +112,7 @@ t_list	*tetlst(char **all_buff)
 	t_list		*tmp;
 
 	i = -1;
-	alphabet = 65;
+	alphabet = 64;
 	root = (struct s_list *)ft_memalloc(sizeof(t_list));
 	newlst = root;
 	while (all_buff[++i])
@@ -120,17 +120,14 @@ t_list	*tetlst(char **all_buff)
 		newlst->length = (v_pos(all_buff[i])[1] - v_pos(all_buff[i])[0] + 1);
 		newlst->width = (h_pos(all_buff[i])[1] - h_pos(all_buff[i])[0] + 1);
 		newlst->tetro = move_upperleft(all_buff[i]);
-		newlst->letter = alphabet;
-		newlst->tetro_len = ft_strlen(newlst->tetro);
+		newlst->letter = ++alphabet;
 		if (all_buff[i + 1])
 		{
 			tmp = (struct s_list *)ft_memalloc(sizeof(t_list));
 			newlst->next = tmp;
 			newlst = newlst->next;
 		}
-		else
-			newlst->next = NULL;
-		alphabet++;
 	}
+	newlst->next = NULL;
 	return (root);
 }

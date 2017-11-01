@@ -10,27 +10,34 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = fillit.a
+NAME = fillit
 
-FILES = ft_maketet.c ft_putstr.c ft_strlen.c ft_memalloc.c ft_strnew.c \
-		ft_bzero.c ft_strsub.c ft_strdup.c ft_strcmp.c ft_isalpha.c ft_solver.c\
-		ft_makelist.c ft_memalloc.c ft_bzboard.c
+NAMELIB = fillit.a
 
-OBJ = *.o
+SRC = 	ft_maketet.c ft_solver.c ft_makelist.c ft_bzboard.c main.c
+
+SRCLIB = ft_putstr.c ft_strlen.c ft_memalloc.c ft_strnew.c ft_bzero.c\
+		 ft_strsub.c ft_strdup.c ft_strcmp.c 
+
+OBJ = ft_putstr.o ft_strlen.o ft_memalloc.o ft_strnew.o ft_bzero.o\
+	  ft_strsub.o ft_strdup.o ft_strcmp.o
 
 all: $(NAME)
 
-$(OBJ): $(FILES)
-	gcc -Wall -Wextra -Werror -c $(FILES)
+$(NAME): $(NAMELIB)
+	gcc -Wall -Wextra -Werror -o $(NAME) $(SRC) $(NAMELIB)
 
-$(NAME): $(OBJ)
-	ar rcs $(NAME) $(OBJ)
+$(NAMELIB):
+	gcc -Wall -Wextra -Werror -c $(SRCLIB)
+	ar rcs $(NAMELIB) $(OBJ)
+	ranlib $(NAMELIB)
 
 clean:
 	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAMELIB)
 
 re: fclean all
 
