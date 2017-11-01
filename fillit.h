@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 12:57:06 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/29 22:01:35 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/31 18:31:39 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char				**ft_maketet(int fd);
 int					ft_count_tetro(char **all_buff);
 int					ft_findbigsquare(int tet_quan);
 int					test_pos(t_list *tetlst, char *board, int b_len, int b_pos);
-int					place_tet(t_list *tetlst, char *board, int b_len,\
+void				place_tet(t_list *tetlst, char *board, int b_len,\
 						int b_pos);
 void				del_tet(t_list *tetlst, char *board, int b_len, int b_pos);
 int					recursive_solver(t_list *tetlst, char *board, int b_len, \

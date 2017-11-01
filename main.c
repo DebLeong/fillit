@@ -6,7 +6,7 @@
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/29 19:24:18 by dleong            #+#    #+#             */
-/*   Updated: 2017/10/30 14:54:32 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/31 18:44:51 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int		main(int argc, char **argv)
 	ft_bzboard(board, (size_t)b_len);
 	curr_lst = tetlst(all_buff);
 
-	/*
 	t_list	*test;
 	test = curr_lst;
 	while (test != NULL)
@@ -47,10 +46,12 @@ int		main(int argc, char **argv)
 		write(1, "\n", 1);
 		test = test->next;
 	}
-	*/
 
 	while (!(recursive_solver(curr_lst, board, b_len, 0)))
-		ft_bzboard((char *)board, (size_t)b_len++);
+	{
+		b_len++;
+		board = ft_bzboard((char *)board, (size_t)b_len);
+	}
 	ft_putstr(board);
 	return (0);
 }

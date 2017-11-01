@@ -6,7 +6,7 @@
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 15:39:59 by dleong            #+#    #+#             */
-/*   Updated: 2017/10/30 14:50:09 by dleong           ###   ########.fr       */
+/*   Updated: 2017/10/31 18:50:15 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		test_pos(t_list *tetlst, char *board, int b_len, int b_pos)
 	return (1);
 }
 
-int		place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
+void		place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 {
 	int		t_pos;
 	int		x;
@@ -71,7 +71,6 @@ int		place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 		}
 		y++;
 	}
-	return (1);
 }
 
 void	del_tet(t_list *tetlst, char *board, int b_len, int b_pos)
@@ -118,10 +117,11 @@ int		recursive_solver(t_list *tetlst, char *board, int b_len, int b_pos)
 			//ft_putstr("placed\n");
 			//printf("b_pos is %i\n", b_pos);
 			place_tet(root, board, b_len, b_pos);
-			//tt_putstr(board);
+			//ft_putstr(board);
 			if (recursive_solver(root->next, board, b_len, b_pos))
 				return (1);
 			del_tet(root, board, b_len, b_pos);
+			return (0);
 		}
 		b_pos++;
 	}
