@@ -6,7 +6,7 @@
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/22 17:24:14 by dleong            #+#    #+#             */
-/*   Updated: 2017/10/29 19:09:01 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/02 14:16:32 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,18 @@
 
 char	*ft_strnew(size_t size)
 {
-	void	*s;
+	int		i;
+	char	*s;
 
+	i = 0;
 	if ((s = ft_memalloc(size + 1)))
+	{
+		while (s[i] != '\0')
+		{
+			s[i] = '.';
+			i++;
+		}
 		return (s);
+	}
 	return (NULL);
 }

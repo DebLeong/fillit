@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 12:57:06 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/31 18:31:39 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/02 14:09:53 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct		s_list
 	char			letter;
 	int				length;
 	int				width;
+	int				total_width;
 	struct s_list	*next;
 }					t_list;
 
@@ -47,5 +48,9 @@ void				del_tet(t_list *tetlst, char *board, int b_len, int b_pos);
 int					recursive_solver(t_list *tetlst, char *board, int b_len, \
 						int b_pos);
 t_list				*tetlst(char **all_buff);
+int					ft_aroundcheck(char *buf);
+int					ft_checkmore(char *buf);
+int					ft_checkvalidity(char *buf);
+int					ft_onepiece(int fd);
 
 #endif

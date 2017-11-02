@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/10/29 19:08:25 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/02 14:13:25 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ int		*h_pos(char *tetro)
 	int i;
 	int j;
 	int leftmost;
+	int	rightmost;
 	int	*result;
 
 	j = 0;
 	leftmost = 3;
+	rightmost = 0;
 	result = NULL;
 	result = ft_memalloc(sizeof(int) * 2);
 	while (j < 4)
@@ -60,8 +62,17 @@ int		*h_pos(char *tetro)
 			leftmost = i % 5;
 		j++;
 	}
+	while (j > 0)
+	{
+		i = 4 * j;
+		while (tetro[i] == '.' || tetro[i] == '\n')
+			i--;
+		if ((i % 5) > rightmost)
+			rightmost = i % 5;
+		j--;
+	}
 	result[0] = leftmost;
-	result[1] = 4;
+	result[1] = rightmost;;
 	return (result);
 }
 
@@ -119,6 +130,7 @@ t_list	*tetlst(char **all_buff)
 	{
 		newlst->length = (v_pos(all_buff[i])[1] - v_pos(all_buff[i])[0] + 1);
 		newlst->width = (h_pos(all_buff[i])[1] - h_pos(all_buff[i])[0] + 1);
+		newlst->total_width = 5 - h_pos(all_buff[i])[0];
 		newlst->tetro = move_upperleft(all_buff[i]);
 		newlst->letter = ++alphabet;
 		if (all_buff[i + 1])

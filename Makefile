@@ -14,7 +14,8 @@ NAME = fillit
 
 NAMELIB = fillit.a
 
-SRC = 	ft_maketet.c ft_solver.c ft_makelist.c ft_bzboard.c main.c
+SRC = 	ft_maketet.c ft_solver.c ft_makelist.c ft_bzboard.c main.c\
+		ft_checkfile.c
 
 SRCLIB = ft_putstr.c ft_strlen.c ft_memalloc.c ft_strnew.c ft_bzero.c\
 		 ft_strsub.c ft_strdup.c ft_strcmp.c 
