@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/11/02 14:13:25 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/02 23:02:07 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ char	*move_upperleft(char *all_buff)
 	}
 	w = 5 - offset;
 	result = ft_strsub(result, v_pos(all_buff)[0] * w, l * w);
+	result[l * w] = '\0';
 	return (result);
 }
 

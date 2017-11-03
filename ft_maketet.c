@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/11/01 18:00:26 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/02 22:59:21 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		ft_findbigsquare(int tet_quan)
 	int	b_len;
 
 	b_len = 2;
-	while ((b_len << 2) < (tet_quan * 4))
+	while ((b_len * b_len) < (tet_quan * 4))
 		b_len++;
 	return (b_len);
 }
