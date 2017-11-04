@@ -1,25 +1,20 @@
 /* ************************************************************************** */
-/*																			  */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_solver.c                                        :+:      :+:    :+:   */
+/*   ft_solver1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/27 15:39:59 by dleong            #+#    #+#             */
-/*   Updated: 2017/11/03 21:26:23 by dleong           ###   ########.fr       */
+/*   Created: 2017/11/03 21:43:08 by dleong            #+#    #+#             */
+/*   Updated: 2017/11/03 21:45:23 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
 /*
-** c[0] is x
-** c[1] is y
-** c[2] is offset_x
-** c[3] is offset_y
-** c[4] is placed_tet
-** c[5] is t_pos
+** c[0] is x			c[1] is y		c[2] is offset_x	c[3] is offset_y
+** c[4] is placed_tet	c[5] is t_pos
 */
 
 int			test_pos(t_list *tetlst, char *board, int b_len, int b_pos)
@@ -40,7 +35,7 @@ int			test_pos(t_list *tetlst, char *board, int b_len, int b_pos)
 		while ((++c[0] < (tetlst->total_width - 1)))
 		{
 			if ((tetlst->tetro[c[5]] == '#') && ((c[0] + c[2]) >= b_len ||
-					(c[1] + c[3]) >= b_len || ft_isalpha(board[b_pos])))
+						(c[1] + c[3]) >= b_len || ft_isalpha(board[b_pos])))
 				return (0);
 			if (tetlst->tetro[c[5]] == '#')
 				c[4]++;
@@ -52,9 +47,7 @@ int			test_pos(t_list *tetlst, char *board, int b_len, int b_pos)
 }
 
 /*
-** c[0] is x
-** c[1] is y
-** c[2] is t_pos
+** c[0] is x	c[1] is y	c[2] is t_pos
 */
 
 int			place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
@@ -87,8 +80,7 @@ int			place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 }
 
 /*
-** c[0] is x
-** c[1] is y
+** c[0] is x	c[1] is y
 */
 
 void		del_tet(t_list *tetlst, char *board, int b_len, int b_pos)

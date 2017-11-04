@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 12:57:06 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/11/03 21:17:02 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/03 21:39:28 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char				**ft_maketet(int fd);
 int					ft_count_tetro(char **all_buff);
 int					ft_findbigsquare(int tet_quan);
 int					read_file(char *argv);
+void				solve(int fd);
 int					check_tetro_char(char *string, int size);
 int					ft_checkconnection(char *buf, int size);
 int					test_pos(t_list *tetlst, char *board, int b_len, int b_pos);

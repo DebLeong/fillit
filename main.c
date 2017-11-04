@@ -6,7 +6,7 @@
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/29 19:24:18 by dleong            #+#    #+#             */
-/*   Updated: 2017/11/03 21:19:27 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/03 21:40:34 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 int		main(int argc, char **argv)
 {
-	char	**all_buff;
-	char	*board;
-	int		b_len;
 	int		fd;
-	t_list	*curr_lst;
 
 	fd = open(argv[1], O_RDONLY);
 	if (argc != 2)
@@ -31,6 +27,16 @@ int		main(int argc, char **argv)
 		ft_putstr("error\n");
 		return (0);
 	}
+	solve(fd);
+	return (0);
+}
+
+void	solve(int fd)
+{
+	char	**all_buff;
+	char	*board;
+	int		b_len;
+	t_list	*curr_lst;
 
 	all_buff = ft_memalloc(sizeof(char) * 22 * (26 + 1));
 	all_buff = ft_maketet(fd);
@@ -38,12 +44,10 @@ int		main(int argc, char **argv)
 	board = ft_strnew(sizeof(char) * 121);
 	ft_bzboard(board, (size_t)b_len);
 	curr_lst = tetlst(all_buff);
-	
 	while (!(recursive_solver(curr_lst, board, b_len, 0)))
 	{
 		b_len++;
 		board = ft_bzboard((char*)board, (size_t)b_len);
 	}
 	ft_putstr(board);
-	return (0);
 }
