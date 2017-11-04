@@ -6,16 +6,14 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 12:57:06 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/11/03 21:39:28 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/04 11:59:00 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLIT_H
 # define FILLIT_H
 # include <stdlib.h>
-# include <stdio.h>
 # include <unistd.h>
-# include <string.h>
 # include <fcntl.h>
 
 typedef struct		s_list
