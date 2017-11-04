@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/11/02 23:02:07 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/03 01:33:45 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,17 @@ int		*v_pos(char *tetro)
 }
 
 /*
-** function returns horizontal coordinates of tetromino from 1D array
+** function returns left horizontal coordinate of tetromino from 1D array
 */
 
-int		*h_pos(char *tetro)
+int		h_pos_l(char *tetro)
 {
 	int i;
 	int j;
 	int leftmost;
-	int	rightmost;
-	int	*result;
 
 	j = 0;
 	leftmost = 3;
-	rightmost = 0;
-	result = NULL;
-	result = ft_memalloc(sizeof(int) * 2);
 	while (j < 4)
 	{
 		i = 5 * j;
@@ -62,6 +57,21 @@ int		*h_pos(char *tetro)
 			leftmost = i % 5;
 		j++;
 	}
+	return (leftmost);
+}
+
+/*
+** function returns right horizontal coordinate of tetromino from 1D array
+*/
+
+int		h_pos_r(char *tetro)
+{
+	int i;
+	int j;
+	int	rightmost;
+
+	j = 4;
+	rightmost = 0;
 	while (j > 0)
 	{
 		i = 4 * j;
@@ -71,9 +81,7 @@ int		*h_pos(char *tetro)
 			rightmost = i % 5;
 		j--;
 	}
-	result[0] = leftmost;
-	result[1] = rightmost;;
-	return (result);
+	return (rightmost);
 }
 
 /*
@@ -94,8 +102,8 @@ char	*move_upperleft(char *all_buff)
 	count[2] = 0;
 	result = ft_memalloc(sizeof(char) * 21);
 	l = (v_pos(all_buff)[1] - v_pos(all_buff)[0] + 1);
-	w = (h_pos(all_buff)[1] - h_pos(all_buff)[0] + 1);
-	offset = h_pos(all_buff)[0];
+	w = (h_pos_r(all_buff) - h_pos_l(all_buff) + 1);
+	offset = h_pos_l(all_buff);
 	while (count[2] < 20)
 	{
 		while ((count[2] % 5) < offset)
@@ -118,22 +126,20 @@ char	*move_upperleft(char *all_buff)
 t_list	*tetlst(char **all_buff)
 {
 	int			i;
-	int			alphabet;
 	t_list		*newlst;
 	t_list		*root;
 	t_list		*tmp;
 
 	i = -1;
-	alphabet = 64;
 	root = (struct s_list *)ft_memalloc(sizeof(t_list));
 	newlst = root;
 	while (all_buff[++i])
 	{
 		newlst->length = (v_pos(all_buff[i])[1] - v_pos(all_buff[i])[0] + 1);
-		newlst->width = (h_pos(all_buff[i])[1] - h_pos(all_buff[i])[0] + 1);
-		newlst->total_width = 5 - h_pos(all_buff[i])[0];
+		newlst->width = (h_pos_r(all_buff[i]) - h_pos_l(all_buff[i]) + 1);
+		newlst->total_width = 5 - h_pos_l(all_buff[i]);
 		newlst->tetro = move_upperleft(all_buff[i]);
-		newlst->letter = ++alphabet;
+		newlst->letter = 65 + i;
 		if (all_buff[i + 1])
 		{
 			tmp = (struct s_list *)ft_memalloc(sizeof(t_list));

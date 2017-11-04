@@ -18,10 +18,10 @@ SRC = 	ft_maketet.c ft_solver.c ft_makelist.c ft_bzboard.c main.c\
 		ft_checkfile.c
 
 SRCLIB = ft_putstr.c ft_strlen.c ft_memalloc.c ft_strnew.c ft_bzero.c\
-		 ft_strsub.c ft_strdup.c ft_strcmp.c 
+		 ft_strsub.c ft_strdup.c ft_strcmp.c ft_isalpha.c ft_strncpy.c
 
 OBJ = ft_putstr.o ft_strlen.o ft_memalloc.o ft_strnew.o ft_bzero.o\
-	  ft_strsub.o ft_strdup.o ft_strcmp.o
+	  ft_strsub.o ft_strdup.o ft_strcmp.o ft_isalpha.o ft_strncpy.o
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 18:28:07 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/11/02 22:59:21 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/03 21:24:58 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ char	**ft_maketet(int fd)
 	int		i;
 
 	i = 0;
-	all_buf = (char**)ft_memalloc(sizeof(char*) * 26);
+	if (!(all_buf = (char**)ft_memalloc(sizeof(char*) * 26)))
+		return (0);
 	buf = ft_strnew(20);
-	while (read(fd, buf, 21) && i < 4)
+	while (read(fd, buf, 21) && i < 27)
 	{
 		buf[21] = '\0';
 		all_buf[i] = ft_strdup(buf);

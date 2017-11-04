@@ -6,7 +6,7 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 12:57:06 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/11/02 22:33:25 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/03 21:17:02 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,16 @@ void				ft_putstr(char const *s);
 size_t				ft_strlen(char const *s);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strdup(const char *s1);
+char				*ft_strncpy(char *dst, const char *src, size_t len);
 int					ft_strcmp(const char *s1, const char *s2);
 void				*ft_memalloc(size_t size);
+int					ft_isalpha(int c);
 char				**ft_maketet(int fd);
 int					ft_count_tetro(char **all_buff);
 int					ft_findbigsquare(int tet_quan);
+int					read_file(char *argv);
+int					check_tetro_char(char *string, int size);
+int					ft_checkconnection(char *buf, int size);
 int					test_pos(t_list *tetlst, char *board, int b_len, int b_pos);
 int					place_tet(t_list *tetlst, char *board, int b_len,\
 						int b_pos);

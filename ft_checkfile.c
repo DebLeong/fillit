@@ -6,107 +6,96 @@
 /*   By: cmacrae <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 20:50:47 by cmacrae           #+#    #+#             */
-/*   Updated: 2017/11/01 17:28:12 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/03 21:26:29 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-/*
-** testing read function
-** fd = filedescriptor
-*/
-
-int	ft_aroundcheck(char *buf)
+int			ft_checkconnection(char *tetro, int size)
 {
-	int c;
-	int k;
+	int		i;
+	int		connection;
+	int		hash;
 
-	c = 0;
-	k = 0;
-	while (buf[c] != '\0')
-	{
-		if (buf[c] == '#')
-		{
-			if (buf[c + 1] == '#' && buf[c + 5] == '#')
-				k++;
-			k++;
-		}
-		if (buf[c] == '#' && c > 0)
-		{
-			if (buf[c - 1] == '#' && buf[c + 1] == '#' && buf[c + 5] == '#')
-				k++;
-			k++;
-		}
-		c++;
-	}
-	return (k);
-}
-
-int	ft_checkmore(char *buf)
-{
-	int *loc;
-	int i;
-	int j;
-
+	hash = 0;
 	i = 0;
-	j = 0;
-	loc = (int *)ft_memalloc(sizeof(int) * 4);
-	while (buf[i] != '\0')
+	connection = 0;
+	while (i < size)
 	{
-		if (j > 4)
-			break ;
-		if (buf[i] == '#')
+		if (tetro[i] == '#')
 		{
-			loc[j] = i;
-			j++;
+			if (tetro[i - 1] == '#' && i >= 1)
+				connection++;
+			if (tetro[i + 1] == '#' && i < size)
+				connection++;
+			if (tetro[i - 5] == '#' && i >= 5)
+				connection++;
+			if (tetro[i + 5] == '#' && i <= 16)
+				connection++;
+			hash++;
 		}
 		i++;
 	}
-	if (j != 4 && buf[i] != '\0')
-		return (-1);
-	if (*buf && ft_aroundcheck(buf) >= 8)
-		return (0);
-	return (-1);
-}
-
-/*
-** this checks if string is the right size/ has the right characters
-** fix it
-*/
-
-int	ft_checkvalidity(char *buf)
-{
-	int i;
-
-	i = 0;
-	while (buf[i] != '\0')
-	{
-		if (buf[4] != '\n' || buf[9] != '\n' || buf[14] != '\n'
-		|| buf[19] != '\n')
-			return (-1);
-		if (buf[i] != '#' && buf[i] != '.' && buf[i] != '\n')
-			return (-1);
-		i++;
-	}
-	if (ft_checkmore(buf) != 0)
-		return (-1);
+	if ((connection == 6 || connection == 8) && (hash == 4))
+		return (1);
 	return (0);
 }
 
-int	ft_onepiece(int fd)
+int			check_tetro_char(char *string, int size)
 {
-	char	*buf;
-	int		bytes_read;
+	int		count;
+	int		hash;
+	int		newline;
+	int		dot;
+	int		i;
 
-	buf = ft_strnew(20);
-	if (fd < 0)
-		exit(1);
-	bytes_read = read(fd, buf, 21);
-	if (ft_checkvalidity(buf) != 0)
-		return (-1);
-	if (bytes_read > 0)
-		return (ft_onepiece(fd));
-	else
+	hash = 0;
+	newline = 0;
+	dot = 0;
+	i = 0;
+	count = 0;
+	while (i < size)
+	{
+		if (string[i] == '#')
+			hash++;
+		if (string[i] == '\n')
+			newline++;
+		if (string[i] == '.')
+			dot++;
+		i++;
+	}
+	if ((hash % 4 != 0) || (dot % 12 != 0))
+		return (1);
+	return (newline % 5);
+}
+
+int			read_file(char *argv)
+{
+	int		fd;
+	int		i;
+	char	buff[21];
+	char	buff2[20];
+	char	file_buff[546];
+	int		count;
+
+	i = 0;
+	fd = open(argv, O_RDONLY);
+	count = read(fd, file_buff, 546);
+	if ((count % 21) != 20)
 		return (0);
+	file_buff[count] = '\0';
+	while (i <= (count - 41))
+	{
+		if (ft_checkconnection(ft_strncpy(buff, &file_buff[i], 21), 21) == 0)
+			return (0);
+		if (check_tetro_char(ft_strncpy(buff, &file_buff[i], 21), 21) != 0)
+			return (0);
+		i += 21;
+	}
+	if ((ft_checkconnection(ft_strncpy(buff2, &file_buff[i], 20), 20) != 1)
+		|| (check_tetro_char(ft_strncpy(buff, &file_buff[i], 20), 20) != 4)
+		|| (check_tetro_char(ft_strncpy(buff, &file_buff[i], 20), 20) == 1))
+		return (0);
+	return (1);
 }

@@ -1,4 +1,5 @@
 /* ************************************************************************** */
+/*																			  */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_solver.c                                        :+:      :+:    :+:   */
@@ -6,92 +7,116 @@
 /*   By: dleong <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/27 15:39:59 by dleong            #+#    #+#             */
-/*   Updated: 2017/11/03 00:30:05 by dleong           ###   ########.fr       */
+/*   Updated: 2017/11/03 21:26:23 by dleong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
+/*
+** c[0] is x
+** c[1] is y
+** c[2] is offset_x
+** c[3] is offset_y
+** c[4] is placed_tet
+** c[5] is t_pos
+*/
+
 int			test_pos(t_list *tetlst, char *board, int b_len, int b_pos)
 {
-	int		t_pos = 0;
-	int		x = 0;
-	int		y = 0;
-	char	*tetro;
-	int		offset_x = b_pos % (b_len + 1);
-	int		offset_y = b_pos / (b_len + 1);
+	int		c[6];
 
-	tetro = &tetlst->tetro[t_pos];
-	while (y < tetlst->length)
+	c[0] = -1;
+	c[1] = -1;
+	c[2] = b_pos % (b_len + 1);
+	c[3] = b_pos / (b_len + 1);
+	c[4] = 0;
+	c[5] = 0;
+	while (++c[1] < tetlst->length)
 	{
-		x = 0;
-		t_pos = 0 + (y * tetlst->total_width);
-		b_pos = offset_x + (y * (b_len + 1));
-		while (x < tetlst->total_width)
+		c[0] = -1;
+		c[5] = 0 + (c[1] * tetlst->total_width);
+		b_pos = c[2] + ((c[3] + c[1]) * (b_len + 1));
+		while ((++c[0] < (tetlst->total_width - 1)))
 		{
-			if ((tetro[t_pos] == '#') && (((x + offset_x) >= b_len) || ((y + offset_y) >= b_len)))
+			if ((tetlst->tetro[c[5]] == '#') && ((c[0] + c[2]) >= b_len ||
+					(c[1] + c[3]) >= b_len || ft_isalpha(board[b_pos])))
 				return (0);
-			if ((tetro[t_pos] == '#') && (board[b_pos] != '.'))
-				return (0);
-			x++;
+			if (tetlst->tetro[c[5]] == '#')
+				c[4]++;
 			b_pos++;
-			t_pos++;
+			c[5]++;
 		}
-		y++;
 	}
-	return (1);
+	return (c[4]);
 }
 
-int		place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
-{
-	int		x = 0;
-	int		y = 0;
-	int		t_pos = 0;
-	char	*tetro;
-	int		offset_x = b_pos % (b_len + 1);
+/*
+** c[0] is x
+** c[1] is y
+** c[2] is t_pos
+*/
 
-	tetro = &tetlst->tetro[t_pos];
-	while (y < tetlst->length)
+int			place_tet(t_list *tetlst, char *board, int b_len, int b_pos)
+{
+	int		c[3];
+	int		offset_x;
+	int		offset_y;
+
+	c[0] = 0;
+	c[1] = 0;
+	c[2] = 0;
+	offset_x = b_pos % (b_len + 1);
+	offset_y = b_pos / (b_len + 1);
+	while (c[1] < tetlst->length)
 	{
-		x = 0;
-		t_pos = 0 + (y * tetlst->total_width);
-		b_pos = offset_x + (y * (b_len + 1));
-		while (x < tetlst->total_width)
+		c[0] = 0;
+		c[2] = 0 + (c[1] * tetlst->total_width);
+		b_pos = offset_x + ((offset_y + c[1]) * (b_len + 1));
+		while (c[0] < (tetlst->total_width - 1))
 		{
-			if (tetro[t_pos] == '#')
+			if (tetlst->tetro[c[2]] == '#')
 				board[b_pos] = tetlst->letter;
 			b_pos++;
-			t_pos++;
-			x++;
+			c[2]++;
+			c[0]++;
 		}
-		y++;
+		c[1]++;
 	}
 	return (1);
 }
+
+/*
+** c[0] is x
+** c[1] is y
+*/
 
 void		del_tet(t_list *tetlst, char *board, int b_len, int b_pos)
 {
-	int		t_pos = 0;
-	int		x = 0;
-	int		y = 0;
-	char	*tetro;
-	int		offset_x = b_pos % (b_len + 1);
+	int		t_pos;
+	int		c[2];
+	int		offset_x;
+	int		offset_y;
 
-	tetro = &tetlst->tetro[t_pos];
-	while (y < tetlst->length)
+	t_pos = 0;
+	c[0] = 0;
+	c[1] = 0;
+	offset_x = b_pos % (b_len + 1);
+	offset_y = b_pos / (b_len + 1);
+	while (c[1] < tetlst->length)
 	{
-		x = 0;
-		t_pos = 0 + (y * tetlst->total_width);
-		b_pos = offset_x + (y * (b_len + 1));
-		while (x < tetlst->width)
+		c[0] = 0;
+		t_pos = 0 + (c[1] * tetlst->total_width);
+		b_pos = offset_x + ((offset_y + c[1]) * (b_len + 1));
+		while (c[0] < (tetlst->total_width - 1))
 		{
 			if (board[b_pos] == tetlst->letter)
 				board[b_pos] = '.';
 			b_pos++;
 			t_pos++;
-			x++;
+			c[0]++;
 		}
-		y++;
+		c[1]++;
 	}
 }
 
@@ -101,10 +126,10 @@ int			recursive_solver(t_list *tetlst, char *board, int b_len, int b_pos)
 	{
 		while (board[b_pos] != '\0')
 		{
-			if (test_pos(tetlst, board, b_len, b_pos))
+			if (test_pos(tetlst, board, b_len, b_pos) == 4)
 			{
 				place_tet(tetlst, board, b_len, b_pos);
-				if (recursive_solver(tetlst->next, board, b_len, b_pos))
+				if (recursive_solver(tetlst->next, board, b_len, 0))
 					return (1);
 				del_tet(tetlst, board, b_len, b_pos);
 			}
